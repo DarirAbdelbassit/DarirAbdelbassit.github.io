@@ -1,6 +1,24 @@
 var portfolioData = [
   {
     key: "0",
+    category: "LARAVEL",
+    title: "DarirGigs",
+    type: "Personal Project",
+    imageUrl: "assets/img/portfolio/laravel/darir-gigs/main.png",
+    images: [
+      "assets/img/portfolio/laravel/darir-gigs/hero.png",
+      "assets/img/portfolio/laravel/darir-gigs/register.png",
+      "assets/img/portfolio/laravel/darir-gigs/single-gig.png",
+    ],
+    projectURL:
+      "https://github.com/DarirAbdelbassit/DarirGigs-Find-post-jobs-projects",
+    projectUrlTitle: "View on GitHub",
+    description:
+      "DarirGigs is a modern web application developed using Laravel and Tailwind CSS, serving as a centralized platform for job seekers and project enthusiasts. This user-friendly system allows visitors to explore, submit, and manage job or project listings seamlessly. Key features include the ability to browse through various opportunities, a powerful search functionality, and user authentication for registered individuals. Users can log in to submit new listings, edit existing posts, and manage their submissions effortlessly. With a focus on providing a streamlined experience, DarirGigs connects individuals with diverse opportunities in a convenient and efficient manner.",
+    technologies: ["HTML5", "Tailwind CSS", "JavaScript", "Laravel", "MySQL"],
+  },
+  {
+    key: "1",
     category: "PHP",
     title: "DarirSettaf Store",
     type: "Final Project",
@@ -28,50 +46,7 @@ var portfolioData = [
     ],
   },
   {
-    key: "1",
-    category: "PHP",
-    title: "ESEFA Attendance System",
-    type: "Internship Project",
-    imageUrl: "assets/img/portfolio/php/absence-manager/login.png",
-    images: [
-      "assets/img/portfolio/php/absence-manager/login.png",
-      "assets/img/portfolio/php/absence-manager/modules.png",
-      "assets/img/portfolio/php/absence-manager/students-list.png",
-    ],
-    projectURL: "https://github.com/DarirAbdelbassit/Gestion_Absence_ESEFA",
-    projectUrlTitle: "View on GitHub",
-    description:
-      "The ESEFA Absence Management System is an application designed for professors at The Higher School of Education and Training - Agadir. Professors can log in to their accounts to access a comprehensive overview of their modules and classes. Within this system, they can efficiently view the list of students in each class and manage attendance records for individual students. This application streamlines the process of tracking and  managing student absences.",
-    technologies: [
-      "HTML5",
-      "CSS3",
-      "Bootstrap",
-      "JavaScript",
-      "jQuery",
-      "PHP",
-      "MySQL",
-    ],
-  },
-  {
     key: "2",
-    category: "LARAVEL",
-    title: "DarirGigs",
-    type: "Personal Project",
-    imageUrl: "assets/img/portfolio/laravel/darir-gigs/main.png",
-    images: [
-      "assets/img/portfolio/laravel/darir-gigs/hero.png",
-      "assets/img/portfolio/laravel/darir-gigs/register.png",
-      "assets/img/portfolio/laravel/darir-gigs/single-gig.png",
-    ],
-    projectURL:
-      "https://github.com/DarirAbdelbassit/DarirGigs-Find-post-jobs-projects",
-    projectUrlTitle: "View on GitHub",
-    description:
-      "DarirGigs is a modern web application developed using Laravel and Tailwind CSS, serving as a centralized platform for job seekers and project enthusiasts. This user-friendly system allows visitors to explore, submit, and manage job or project listings seamlessly. Key features include the ability to browse through various opportunities, a powerful search functionality, and user authentication for registered individuals. Users can log in to submit new listings, edit existing posts, and manage their submissions effortlessly. With a focus on providing a streamlined experience, DarirGigs connects individuals with diverse opportunities in a convenient and efficient manner.",
-    technologies: ["HTML5", "Tailwind CSS", "JavaScript", "Laravel", "MySQL"],
-  },
-  {
-    key: "3",
     category: "LARAVEL",
     title: "DarirMovies",
     type: "Personal Project",
@@ -93,6 +68,31 @@ var portfolioData = [
       "Laravel",
       "Livewire 3",
       "TMDb API",
+    ],
+  },
+  {
+    key: "3",
+    category: "PHP",
+    title: "ESEFA Attendance System",
+    type: "Internship Project",
+    imageUrl: "assets/img/portfolio/php/absence-manager/login.png",
+    images: [
+      "assets/img/portfolio/php/absence-manager/login.png",
+      "assets/img/portfolio/php/absence-manager/modules.png",
+      "assets/img/portfolio/php/absence-manager/students-list.png",
+    ],
+    projectURL: "https://github.com/DarirAbdelbassit/Gestion_Absence_ESEFA",
+    projectUrlTitle: "View on GitHub",
+    description:
+      "The ESEFA Absence Management System is an application designed for professors at The Higher School of Education and Training - Agadir. Professors can log in to their accounts to access a comprehensive overview of their modules and classes. Within this system, they can efficiently view the list of students in each class and manage attendance records for individual students. This application streamlines the process of tracking and  managing student absences.",
+    technologies: [
+      "HTML5",
+      "CSS3",
+      "Bootstrap",
+      "JavaScript",
+      "jQuery",
+      "PHP",
+      "MySQL",
     ],
   },
   {
@@ -159,6 +159,7 @@ var portfolioData = [
     ],
   },
 ];
+var portfolioSwiper ;
 document.addEventListener("DOMContentLoaded", function () {
   function createPortfolioItem(item) {
     return `
@@ -255,9 +256,32 @@ function showModal(id) {
       modalImageList.appendChild(swiperSlide);
     });
   }, 500);
+  /**
+   * Portfolio details slider
+   */
+   portfolioSwiper = new Swiper('.portfolio-details-slider', {
+    speed: 400,
+    loop: true,
+    rewind: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    deleteInstance : false,
+  });
 }
 
 function closeModal() {
+
   var modal = document.getElementById("portfolio-details");
 
   // Add Animate.css class for fade-out animation
@@ -269,4 +293,5 @@ function closeModal() {
     // Remove both fade-in and fade-out classes to prepare for the next showing
     modal.classList.remove("animate__fadeIn", "animate__fadeOut");
   }, 500);
+  portfolioSwiper.destroy();
 }

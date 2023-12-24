@@ -395,12 +395,13 @@ section .container {
 .section-title h5::before,
 .section-title h5::after {
   content: "";
-  width: 90px;
+  width: 70px;
   height: 1px;
   display: inline-block;
   background: #4ceb95;
   margin: 4px 10px;
 }
+
 
 .section-title p {
   margin: 0;
@@ -412,6 +413,17 @@ section .container {
   color: #fff;
 }
 
+@media  (max-width: 768px) {
+  .section-title h2::after ,
+.section-title h5::before,
+.section-title h5::after {
+  width: 35px;
+}
+  
+.section-title p {
+  font-size: 30px;
+}
+}
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
@@ -1048,7 +1060,19 @@ section .container {
 .portfolio-details .swiper-pagination .swiper-pagination-bullet-active {
   background-color: #18d26e;
 }
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after{
+  content: 'next';
+  color: #18d26e;
+  font-size: 40px;
+  margin-left: 25px;
+}
 
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
+  content: 'prev';
+  color: #18d26e;
+  font-size: 40px;
+  margin-right: 25px;
+}
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
