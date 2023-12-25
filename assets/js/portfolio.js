@@ -159,7 +159,7 @@ var portfolioData = [
     ],
   },
 ];
-var portfolioSwiper ;
+var portfolioSwiper;
 document.addEventListener("DOMContentLoaded", function () {
   function createPortfolioItem(item) {
     return `
