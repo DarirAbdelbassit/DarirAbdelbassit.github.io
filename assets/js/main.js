@@ -242,4 +242,4 @@ const enCv = document.querySelector("#cv-en-link");
 enCv.href =
   "https://drive.google.com/file/d/1X_V5em6DSOeJDSKgKu1J16RYC8U0I3k7/view";
 frCv.href =
-  "https://drive.google.com/file/d/1EA8ypeQt6P6z17vJ41N1wm82Leq713ak/view";
+  "https://drive.google.com/file/d/1bF98YzIgIohp4H_TdFdBafoZ1uMV2pa5/view";
