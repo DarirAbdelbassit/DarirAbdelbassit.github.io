@@ -97,22 +97,6 @@ var portfolioData = [
   },
   {
     key: "4",
-    category: "WordPress",
-    title: "Iplug Thech&Services",
-    type: "Freelance Project",
-    imageUrl: "assets/img/portfolio/wordpress/iplugtech/hero.png",
-    images: [
-      "assets/img/portfolio/wordpress/iplugtech/main.png",
-      "assets/img/portfolio/wordpress/iplugtech/services.png",
-    ],
-    projectURL: "https://iplugtech.com/",
-    projectUrlTitle: "live demo",
-    description:
-      "iPlug Tech&Services is a WordPress site that showcases the enterprise's products and history. It provides a contact option for visitors and offers a straightforward application process for potential candidates interested in joining the team.",
-    technologies: ["WordPress", "Elementor", "CSS3", "JavaScript", "WpForms"],
-  },
-  {
-    key: "5",
     category: "LARAVEL",
     title: "Creer Mon Entreprise",
     type: "Work Project",
@@ -127,6 +111,7 @@ var portfolioData = [
       '"Cree Mon Entreprise" is a comprehensive platform designed to facilitate entrepreneurs in effortlessly creating businesses online in France. From assisting in determining the optimal type of enterprise for their specific case to generating all the necessary documents for establishing a business in France, the platform offers a seamless and user-friendly experience. The site is structured into four distinct areas, catering to different roles: customer, accountant, administrator, and super-administrator. This multifaceted platform aims to simplify the entrepreneurial journey, providing tailored support and resources for individuals navigating the process of establishing businesses in France.',
     technologies: [
       "HTML5",
+      "CSS3",
       "Bootstrap",
       "Alpine.js",
       "Laravel",
@@ -135,7 +120,7 @@ var portfolioData = [
     ],
   },
   {
-    key: "6",
+    key: "5",
     category: "WordPress",
     title: "Ecomayex",
     type: "Freelance Project",
@@ -158,8 +143,34 @@ var portfolioData = [
       "Google Sheets API",
     ],
   },
+  {
+    key: "6",
+    category: "LARAVEL",
+    title: "Votre Assistant Marketing Maroc",
+    type: "Work Project",
+    imageUrl: "assets/img/portfolio/laravel/vamm/hero.png",
+    images: [
+      "assets/img/portfolio/laravel/vamm/main.png",
+      "assets/img/portfolio/laravel/vamm/admin-dashboard.png",
+      "assets/img/portfolio/laravel/vamm/login.png",
+      "assets/img/portfolio/laravel/vamm/admin-statics.png",
+    ],
+    projectURL: "#",
+    projectUrlTitle: "Coming Soon",
+    description:
+      "'Votre Assistant Marketing Maroc' is a platform that allows you to create a dynamic electronic boutique for all products, with the ability to configure each attribute from the product to its specific attributes such as color, size, etc. through an interface for the admin to easily manage all aspects.",
+    technologies: [
+      "HTML5",
+      "CSS3",
+      "Bootstrap",
+      "Alpine.js",
+      "Laravel",
+      "Livewire 3",
+      "MySQL",
+    ],
+  },
 ];
-var portfolioSwiper ;
+var portfolioSwiper;
 document.addEventListener("DOMContentLoaded", function () {
   function createPortfolioItem(item) {
     return `
@@ -259,29 +270,28 @@ function showModal(id) {
   /**
    * Portfolio details slider
    */
-   portfolioSwiper = new Swiper('.portfolio-details-slider', {
+  portfolioSwiper = new Swiper(".portfolio-details-slider", {
     speed: 400,
     loop: true,
     rewind: true,
     autoplay: {
       delay: 5000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
     },
     pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
+      el: ".swiper-pagination",
+      type: "bullets",
+      clickable: true,
     },
     navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
     },
-    deleteInstance : false,
+    deleteInstance: false,
   });
 }
 
 function closeModal() {
-
   var modal = document.getElementById("portfolio-details");
 
   // Add Animate.css class for fade-out animation
