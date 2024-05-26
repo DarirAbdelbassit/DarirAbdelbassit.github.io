@@ -105,8 +105,8 @@ var portfolioData = [
       "assets/img/portfolio/laravel/cme/hero.png",
       "assets/img/portfolio/laravel/cme/forms-list.png",
     ],
-    projectURL: "#",
-    projectUrlTitle: "Coming Soon",
+    projectURL: "https://creermonentreprise.net/",
+    projectUrlTitle: "Live demo",
     description:
       '"Cree Mon Entreprise" is a comprehensive platform designed to facilitate entrepreneurs in effortlessly creating businesses online in France. From assisting in determining the optimal type of enterprise for their specific case to generating all the necessary documents for establishing a business in France, the platform offers a seamless and user-friendly experience. The site is structured into four distinct areas, catering to different roles: customer, accountant, administrator, and super-administrator. This multifaceted platform aims to simplify the entrepreneurial journey, providing tailored support and resources for individuals navigating the process of establishing businesses in France.',
     technologies: [
@@ -131,7 +131,7 @@ var portfolioData = [
       "assets/img/portfolio/wordpress/ecomayex/master-class.png",
     ],
     projectURL: "https://ecomayex.com/",
-    projectUrlTitle: "live demo",
+    projectUrlTitle: "Live demo",
     description:
       "Ecomayex is a specialized WordPress site offering two courses: Facebook and master classes, complemented by client reviews and results. The website details each course section and provides a straightforward application process, with the admin efficiently managing requests on a Google Sheet.",
     technologies: [
@@ -232,7 +232,7 @@ function showModal(id) {
     projectInfo.innerHTML = `
     <li><strong>Category</strong>: ${portfolioData[id].category}</li>
     <li><strong>Type</strong>: ${portfolioData[id].type}</li>
-    <li><strong>Project URL</strong>: <a href="${portfolioData[id].projectURL}" >${portfolioData[id].projectUrlTitle}</a></li>
+    <li><strong>Project URL</strong>: <a target="_blank" href="${portfolioData[id].projectURL}" >${portfolioData[id].projectUrlTitle}</a></li>
     `;
     // Update project description
     var projectDescription = document.querySelector(".description");
