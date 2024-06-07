@@ -234,12 +234,3 @@
   new PureCounter();
 
 })()
-
-// this file will put my cv in the page so i will not have to update it in the index page.
-const frCv = document.querySelector("#cv-fr-link");
-const enCv = document.querySelector("#cv-en-link");
-
-enCv.href =
-  "https://drive.google.com/file/d/1X_V5em6DSOeJDSKgKu1J16RYC8U0I3k7/view";
-frCv.href =
-  "https://drive.google.com/file/d/1bF98YzIgIohp4H_TdFdBafoZ1uMV2pa5/view";

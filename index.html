@@ -674,22 +674,26 @@
         <p>My CV - French & English Versions</p>
       </div>
       <div class="row">
-        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+        <div
+          onclick="window.open('https://docs.google.com/document/d/17v8hEQjrh70kY0kP2zSv-QkbNIBkou1xdoCeMKDJoc8/edit', '_blank')"
+          class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0 view-cv-link">
           <div class="icon-box">
             <div class="icon"><i class="bx bx-file"></i></div>
             <h4>
-              <a id="cv-fr-link" target="_blank">Resume French Version</a>
+              <a>Resume French Version</a>
             </h4>
             <p>
               The link allows you to view and download the CV in PDF format.
             </p>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+        <div
+          onclick="window.open('https://docs.google.com/document/d/16FK3J23Wo7lWqP2JRvA1oHb6Gi1_oTpn3qbNvH-TskM/edit', '_blank')"
+          class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0 cursor-pointer view-cv-link">
           <div class="icon-box">
             <div class="icon"><i class="bx bx-file"></i></div>
             <h4>
-              <a id="cv-en-link" target="_blank">Resume English Version</a>
+              <span>Resume English Version</span>
             </h4>
             <p>
               The link allows you to view and download the CV in PDF format.
@@ -818,7 +822,7 @@
       typeSpeed: 65,
       backSpeed: 65,
     });
-    
+
     // Function to calculate age based on birthdate
     function calculateAge(birthdate) {
       const birthDate = new Date(birthdate);
