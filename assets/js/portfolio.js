@@ -169,6 +169,31 @@ var portfolioData = [
       "MySQL",
     ],
   },
+  {
+    key: "7",
+    category: "LARAVEL",
+    title: "Annuaire Franchise",
+    type: "Work Project",
+    imageUrl: "assets/img/portfolio/laravel/franchise/franchise1.png",
+    images: [
+      "assets/img/portfolio/laravel/franchise/franchise1.png",
+      "assets/img/portfolio/laravel/franchise/franchise2.png",
+      "assets/img/portfolio/laravel/franchise/franchise3.png",
+      "assets/img/portfolio/laravel/franchise/franchise5.png",
+    ],
+    projectURL: "https://annuairefranchise.fr/",
+    projectUrlTitle: "Live Demo",
+    description:
+      "Annuaire Franchise is a web application that links franchise owners with potential buyers. It offers detailed information on various franchises, including financials and operational guidelines, and features integrated messaging and scheduling tools. This ensures seamless communication and makes finding the perfect franchise easier and more efficient for entrepreneurs.",
+    technologies: [
+      "React Js",
+      "Tiwind CSS",
+      "Laravel",
+      "TanStackQuery",
+      "MySQL",
+      "REST API",
+    ],
+  },
 ];
 var portfolioSwiper;
 document.addEventListener("DOMContentLoaded", function () {
