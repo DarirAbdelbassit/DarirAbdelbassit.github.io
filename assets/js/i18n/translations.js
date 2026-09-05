@@ -16,8 +16,8 @@ window.I18N_STRINGS = {
     nav: {
       home: "Home",
       about: "About",
-      resume: "Resume",
-      cv: "CV",
+      resume: "Career",
+      cv: "Resume",
       portfolio: "Portfolio",
       contact: "Contact",
     },
@@ -61,7 +61,7 @@ window.I18N_STRINGS = {
       algo: "Algorithms",
     },
     resume: {
-      kicker: "Resume",
+      kicker: "Career",
       title: "Work & education",
       experience: "Experience",
       education: "Education",
@@ -122,7 +122,7 @@ window.I18N_STRINGS = {
       edu2B4: "Networks",
     },
     cv: {
-      kicker: "CV",
+      kicker: "Resume",
       title: "My Resume",
       langGroup: "Resume language",
       download: "Download",
