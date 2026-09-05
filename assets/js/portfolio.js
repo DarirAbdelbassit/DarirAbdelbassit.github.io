@@ -186,8 +186,8 @@ var portfolioData = [
     description:
       "Annuaire Franchise is a web application that links franchise owners with potential buyers. It offers detailed information on various franchises, including financials and operational guidelines, and features integrated messaging and scheduling tools. This ensures seamless communication and makes finding the perfect franchise easier and more efficient for entrepreneurs.",
     technologies: [
-      "React Js",
-      "Tiwind CSS",
+      "React.js",
+      "Tailwind CSS",
       "Laravel",
       "TanStackQuery",
       "MySQL",
@@ -196,137 +196,263 @@ var portfolioData = [
   },
 ];
 var portfolioSwiper;
-document.addEventListener("DOMContentLoaded", function () {
-  function createPortfolioItem(item) {
-    return `
-        <div class="col-lg-4 col-md-6 portfolio-item filter-${item.category.toLowerCase()}" id="${item.key}">
-          <div class="portfolio-wrap">  
-            <img src="${item.imageUrl}" class="img-fluid" alt="" />
-            <div class="portfolio-info">
-              <h4>${item.title}</h4>
-              <h5>${item.type}</h5>
-              <div class="portfolio-links" onclick="showModal(${item.key})">
-                  <i class="bx bx-link" ></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+var closeModalTimer;
+
+function hasProjectUrl(url) {
+  return Boolean(url) && url !== "#";
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function getProjectLinkHtml(project, extraClass) {
+  var title = escapeHtml(project.projectUrlTitle);
+  if (hasProjectUrl(project.projectURL)) {
+    return (
+      '<a class="' +
+      extraClass +
+      '" href="' +
+      escapeHtml(project.projectURL) +
+      '" target="_blank" rel="noopener noreferrer">' +
+      title +
+      "</a>"
+    );
+  }
+  return '<span class="portfolio-demo-soon">' + title + "</span>";
+}
+
+function destroyPortfolioSwiper() {
+  if (portfolioSwiper && typeof portfolioSwiper.destroy === "function") {
+    portfolioSwiper.destroy(true, true);
+    portfolioSwiper = undefined;
+  }
+}
+
+function updateSwiperAfterImagesLoad(sliderEl) {
+  var images = sliderEl.querySelectorAll("img");
+  if (!images.length || !portfolioSwiper) {
+    return;
   }
 
-  function populatePortfolio() {
-    var portfolioContainer = document.getElementById("portfolio-container");
+  var loaded = 0;
+  var done = function () {
+    loaded += 1;
+    if (loaded === images.length && portfolioSwiper) {
+      portfolioSwiper.update();
+    }
+  };
 
-    // Display all items in the shuffled array
-    portfolioData.forEach(function (item) {
-      var portfolioItem = createPortfolioItem(item);
-      portfolioContainer.innerHTML += portfolioItem;
-    });
+  images.forEach(function (img) {
+    if (img.complete) {
+      done();
+    } else {
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
+    }
+  });
+}
+
+function initPortfolioSwiper(slideCount) {
+  destroyPortfolioSwiper();
+
+  var sliderEl = document.querySelector(".portfolio-details-slider");
+  if (!sliderEl) {
+    return;
   }
-  populatePortfolio();
-});
-// the logic for the modal
-function showModal(id) {
-  var modal = document.querySelector(".portfolio-details");
 
-  // Add Animate.css class for fade-in aFnimation
-  modal.classList.add("animate__animated", "animate__fadeIn");
+  sliderEl.classList.toggle("is-single", slideCount <= 1);
 
-  modal.style.display = "flex";
-
-  setTimeout(() => {
-    // Clear modal content
-    var modalTitle = document.querySelector(".portfolio-title");
-    modalTitle.innerHTML = "";
-
-    var projectInfo = document.querySelector(".portfolio-info ul");
-    projectInfo.innerHTML = "";
-
-    var projectDescription = document.querySelector(".description");
-    projectDescription.innerText = "";
-
-    var modalImageList = document.querySelector("#portfolio-images");
-    modalImageList.innerHTML = "";
-
-    var technologies = document.querySelector("#portfolio-used-technologies");
-    technologies.innerHTML = "";
-    // insert the data into the modal
-    var modalTitle = document.querySelector(".portfolio-title");
-    modalTitle.innerHTML = portfolioData[id].title;
-    var projectInfo = document.querySelector(".portfolio-info ul");
-    projectInfo.innerHTML = `
-    <li><strong>Category</strong>: ${portfolioData[id].category}</li>
-    <li><strong>Type</strong>: ${portfolioData[id].type}</li>
-    <li><strong>Project URL</strong>: <a target="_blank" href="${portfolioData[id].projectURL}" >${portfolioData[id].projectUrlTitle}</a></li>
-    `;
-    // Update project description
-    var projectDescription = document.querySelector(".description");
-    projectDescription.innerText = portfolioData[id].description;
-    // used technologies
-    var technologies = document.querySelector("#portfolio-used-technologies");
-    technologies.innerHTML = "";
-    portfolioData[id].technologies.forEach(function (item) {
-      var technology = document.createElement("span");
-      technology.innerText = item;
-      technologies.appendChild(technology);
-    });
-    // set the images to the src of the modal image list
-    var modalImageList = document.querySelector("#portfolio-images");
-
-    portfolioData[id].images.forEach(function (item) {
-      var swiperSlide = document.createElement("div");
-      swiperSlide.className = "swiper-slide";
-
-      var image = document.createElement("img");
-      image.src = item;
-
-      // Set maximum width and height
-      image.style.maxWidth = "100%";
-      image.style.maxHeight = "100%";
-
-      // Center the image within the container
-      image.style.display = "block";
-      image.style.margin = "auto";
-
-      swiperSlide.appendChild(image);
-      modalImageList.appendChild(swiperSlide);
-    });
-  }, 500);
-  /**
-   * Portfolio details slider
-   */
-  portfolioSwiper = new Swiper(".portfolio-details-slider", {
-    speed: 400,
-    loop: true,
-    rewind: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
+  portfolioSwiper = new Swiper(sliderEl, {
+    speed: 500,
+    grabCursor: slideCount > 1,
+    keyboard: {
+      enabled: true,
     },
+    rewind: slideCount > 1,
+    autoplay:
+      slideCount > 1
+        ? {
+            delay: 4500,
+            disableOnInteraction: false,
+          }
+        : false,
     pagination: {
-      el: ".swiper-pagination",
-      type: "bullets",
+      el: ".portfolio-details-slider .swiper-pagination",
       clickable: true,
     },
     navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
+      nextEl: ".portfolio-details-slider .swiper-button-next",
+      prevEl: ".portfolio-details-slider .swiper-button-prev",
     },
-    deleteInstance: false,
+    observer: true,
+    observeParents: true,
+    watchOverflow: true,
+  });
+
+  updateSwiperAfterImagesLoad(sliderEl);
+}
+
+function fillPortfolioModal(project) {
+  document.querySelector(".portfolio-title").textContent = project.title;
+  document.querySelector(".portfolio-info ul").innerHTML =
+    "<li><strong>Category</strong>: " +
+    escapeHtml(project.category) +
+    "</li>" +
+    "<li><strong>Type</strong>: " +
+    escapeHtml(project.type) +
+    "</li>" +
+    "<li><strong>Project URL</strong>: " +
+    getProjectLinkHtml(project, "portfolio-inline-link") +
+    "</li>";
+  document.querySelector(".description").textContent = project.description;
+  document.getElementById("portfolio-project-action").innerHTML =
+    getProjectLinkHtml(project, "portfolio-demo-link");
+
+  var technologies = document.getElementById("portfolio-used-technologies");
+  technologies.innerHTML = "";
+  project.technologies.forEach(function (item) {
+    var technology = document.createElement("span");
+    technology.textContent = item;
+    technologies.appendChild(technology);
+  });
+
+  var modalImageList = document.getElementById("portfolio-images");
+  modalImageList.innerHTML = "";
+  project.images.forEach(function (item, index) {
+    var swiperSlide = document.createElement("div");
+    swiperSlide.className = "swiper-slide";
+
+    var image = document.createElement("img");
+    image.src = item;
+    image.alt = project.title + " screenshot " + (index + 1);
+    swiperSlide.appendChild(image);
+    modalImageList.appendChild(swiperSlide);
+  });
+}
+
+function showModal(id) {
+  var project = portfolioData.find(function (item) {
+    return String(item.key) === String(id);
+  });
+  if (!project) {
+    return;
+  }
+
+  var modal = document.getElementById("portfolio-details");
+  clearTimeout(closeModalTimer);
+  destroyPortfolioSwiper();
+  fillPortfolioModal(project);
+
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("portfolio-modal-open");
+
+  requestAnimationFrame(function () {
+    initPortfolioSwiper(project.images.length);
+    setTimeout(function () {
+      if (portfolioSwiper) {
+        portfolioSwiper.update();
+      }
+    }, 80);
   });
 }
 
 function closeModal() {
   var modal = document.getElementById("portfolio-details");
+  if (!modal || !modal.classList.contains("is-open")) {
+    return;
+  }
 
-  // Add Animate.css class for fade-out animation
-  modal.classList.add("animate__animated", "animate__fadeOut");
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("portfolio-modal-open");
 
-  // Set a timeout to hide the modal after the animation completes
-  setTimeout(function () {
-    modal.style.display = "none";
-    // Remove both fade-in and fade-out classes to prepare for the next showing
-    modal.classList.remove("animate__fadeIn", "animate__fadeOut");
-  }, 500);
-  portfolioSwiper.destroy();
+  closeModalTimer = setTimeout(function () {
+    destroyPortfolioSwiper();
+    document.getElementById("portfolio-images").innerHTML = "";
+  }, 350);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  var portfolioContainer = document.getElementById("portfolio-container");
+  var modal = document.getElementById("portfolio-details");
+
+  if (portfolioContainer) {
+    var itemsMarkup = portfolioData
+      .map(function (item) {
+        return (
+          '<div class="col-lg-4 col-md-6 portfolio-item filter-' +
+          item.category.toLowerCase() +
+          '" data-key="' +
+          escapeHtml(item.key) +
+          '">' +
+          '<div class="portfolio-wrap" role="button" tabindex="0" aria-label="Open ' +
+          escapeHtml(item.title) +
+          '">' +
+          '<img src="' +
+          escapeHtml(item.imageUrl) +
+          '" class="img-fluid" alt="' +
+          escapeHtml(item.title) +
+          '" />' +
+          '<div class="portfolio-info">' +
+          "<h4>" +
+          escapeHtml(item.title) +
+          "</h4>" +
+          "<h5>" +
+          escapeHtml(item.type) +
+          "</h5>" +
+          '<div class="portfolio-links"><i class="bx bx-plus"></i></div>' +
+          "</div></div></div>"
+        );
+      })
+      .join("");
+    portfolioContainer.innerHTML = itemsMarkup;
+  }
+
+  if (portfolioContainer) {
+    portfolioContainer.addEventListener("click", function (event) {
+      var wrap = event.target.closest(".portfolio-wrap");
+      if (!wrap) {
+        return;
+      }
+      var item = wrap.closest(".portfolio-item");
+      if (item) {
+        showModal(item.getAttribute("data-key"));
+      }
+    });
+
+    portfolioContainer.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
+      var wrap = event.target.closest(".portfolio-wrap");
+      if (!wrap) {
+        return;
+      }
+      event.preventDefault();
+      var item = wrap.closest(".portfolio-item");
+      if (item) {
+        showModal(item.getAttribute("data-key"));
+      }
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener("click", function (event) {
+      if (event.target === modal || event.target.closest("[data-close-modal]")) {
+        closeModal();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeModal();
+    }
+  });
+});
