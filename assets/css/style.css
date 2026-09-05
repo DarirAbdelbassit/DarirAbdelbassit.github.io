@@ -13,7 +13,10 @@ body {
 body::before {
   content: "";
   position: fixed;
-  background: #010e1b ;
+  background:
+    radial-gradient(circle at 78% 22%, rgba(24, 210, 110, 0.16), transparent 28%),
+    radial-gradient(circle at 12% 80%, rgba(9, 32, 58, 0.55), transparent 36%),
+    linear-gradient(120deg, #010e1b 0%, #071a2e 48%, #010e1b 100%);
   background-size: cover;
   left: 0;
   right: 0;
@@ -78,18 +81,69 @@ h6 {
   color: #fff;
   line-height: 1;
   display: inline-block;
+  padding: 0;
 }
 
 #header h2 {
   font-size: 24px;
-  margin-top: 20px;
+  margin-top: 18px;
+  margin-bottom: 0;
   color: rgba(255, 255, 255, 0.8);
 }
 
 #header h2 span {
-  color: #fff;
+  color: #18d26e;
   border-bottom: 2px solid #18d26e;
   padding-bottom: 6px;
+}
+
+.hero-lead {
+  max-width: 540px;
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  background: #18d26e;
+  color: #072013;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid #18d26e;
+}
+
+.hero-btn:hover,
+.hero-btn:focus-visible {
+  background: #35e888;
+  border-color: #35e888;
+  color: #072013;
+}
+
+.hero-btn.outline {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.hero-btn.outline:hover,
+.hero-btn.outline:focus-visible {
+  border-color: #18d26e;
+  color: #18d26e;
+  background: transparent;
 }
 
 #header img {
@@ -138,6 +192,20 @@ h6 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+  }
+
+  #header .hero-lead {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #header .hero-actions {
+    justify-content: center;
+  }
+
+  #header .social-links {
+    justify-content: center;
   }
 }
 
@@ -152,13 +220,19 @@ h6 {
 }
 
 #header.header-top .social-links,
-#header.header-top h2 {
+#header.header-top h2,
+#header.header-top .hero-lead,
+#header.header-top .hero-actions {
   display: none;
 }
 
 #header.header-top h1 {
   margin-right: auto;
-  font-size: 36px;
+  font-size: 32px;
+}
+
+#header.header-top h1 a.nav-link {
+  color: #fff;
 }
 
 #header.header-top img {
@@ -181,7 +255,7 @@ h6 {
   }
 
   #header.header-top h1 {
-    font-size: 26px;
+    font-size: 22px;
   }
 }
 
@@ -427,9 +501,24 @@ section .container {
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
+.about-me img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  object-position: top;
+}
+
 .about-me .content h3 {
   font-weight: 700;
   font-size: 26px;
+  color: #18d26e;
+}
+
+.about-me .content a {
+  color: #fff;
+}
+
+.about-me .content a:hover {
   color: #18d26e;
 }
 
@@ -571,6 +660,7 @@ section .container {
   padding: 20px;
   background: rgba(255, 255, 255, 0.08);
   transition: ease-in-out 0.3s;
+  height: 100%;
 }
 
 .interests .icon-box i {
@@ -1038,6 +1128,11 @@ section .container {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.45s ease;
+}
+
+.portfolio .portfolio-wrap:hover img {
+  transform: scale(1.06);
 }
 
 .portfolio .portfolio-wrap::before {
@@ -1383,6 +1478,19 @@ body.portfolio-modal-open {
   padding: 20px;
   width: 100%;
   background: rgba(255, 255, 255, 0.08);
+  transition: ease-in-out 0.3s;
+}
+
+.contact .info-box:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.contact .info-box a {
+  color: #fff;
+}
+
+.contact .info-box a:hover {
+  color: #18d26e;
 }
 
 .contact .info-box i.bx {
