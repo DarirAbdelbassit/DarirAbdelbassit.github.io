@@ -1,12 +1,12 @@
 (function () {
   const CVS = {
     en: {
-      file: "cv/ABDELBASSIT_DARIR_CV_EN.pdf",
+      file: "/cv/ABDELBASSIT_DARIR_CV_EN.pdf",
       downloadName: "Abdelbassit_Darir_CV_EN.pdf",
       label: "English"
     },
     fr: {
-      file: "cv/ABDELBASSIT_DARIR_CV_FR.pdf",
+      file: "/cv/ABDELBASSIT_DARIR_CV_FR.pdf",
       downloadName: "Abdelbassit_Darir_CV_FR.pdf",
       label: "French"
     }
@@ -33,7 +33,7 @@
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-  let currentLang = "en";
+  let currentLang = (window.SiteI18n && window.SiteI18n.getLang()) || "en";
   let zoom = 1;
   let renderToken = 0;
   let started = false;
@@ -60,14 +60,18 @@
     downloadBtn.setAttribute("download", cv.downloadName);
   }
 
+  function tr(key, vars) {
+    return window.SiteI18n ? window.SiteI18n.t(key, vars) : key;
+  }
+
   function showMissing(cv) {
     hasPdf = false;
     setZoomEnabled(false);
     pageInfo.textContent = "";
     pagesEl.innerHTML =
       '<div class="cv-empty">' +
-      "<h4>" + cv.label + " resume not found</h4>" +
-      "<p>Upload <strong>" + cv.downloadName + "</strong> to the <strong>cv</strong> folder, then refresh.</p>" +
+      "<h4>" + tr("cv.missingTitle", { label: tr("lang." + currentLang) }) + "</h4>" +
+      "<p>" + tr("cv.missingBody", { file: cv.downloadName }) + "</p>" +
       "</div>";
   }
 
@@ -123,7 +127,7 @@
       await page.render({ canvasContext: context, viewport }).promise;
     }
 
-    pageInfo.textContent = pdf.numPages > 1 ? pdf.numPages + " pages" : "1 page";
+    pageInfo.textContent = pdf.numPages > 1 ? tr("cv.pages", { n: pdf.numPages }) : tr("cv.page");
   }
 
   async function loadCv(lang) {
@@ -217,4 +221,21 @@
       start();
     }
   }).observe(section, { attributes: true, attributeFilter: ["class"] });
+
+  document.addEventListener("site:lang", (event) => {
+    const lang = event.detail && event.detail.lang;
+    if (!CVS[lang]) {
+      return;
+    }
+    currentLang = lang;
+    zoom = 1;
+    langBtns.forEach((btn) => {
+      const active = btn.dataset.cv === lang;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    if (started) {
+      loadCv(lang);
+    }
+  });
 })();
