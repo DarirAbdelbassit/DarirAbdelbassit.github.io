@@ -179,7 +179,7 @@
     var meta = strings()[lang].meta;
     document.title = meta.title;
     document.documentElement.lang = lang;
-    document.documentElement.dataset.lang = lang;
+    document.documentElement.dataset.siteLang = lang;
 
     setMeta('meta[name="description"]', "content", meta.description);
     setMeta('meta[name="keywords"]', "content", meta.keywords);
@@ -245,7 +245,7 @@
   }
 
   function syncSwitcher(lang) {
-    document.querySelectorAll("[data-lang]").forEach(function (btn) {
+    document.querySelectorAll(".lang-switch [data-lang]").forEach(function (btn) {
       var active = btn.getAttribute("data-lang") === lang;
       btn.classList.toggle("is-active", active);
       btn.setAttribute("aria-pressed", active ? "true" : "false");
@@ -291,7 +291,7 @@
 
   function bindSwitcher() {
     document.addEventListener("click", function (event) {
-      var btn = event.target.closest("[data-lang]");
+      var btn = event.target.closest(".lang-switch [data-lang]");
       if (!btn) {
         return;
       }

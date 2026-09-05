@@ -53,7 +53,7 @@
 
       window.__SITE_LANG__ = lang;
       document.documentElement.lang = lang;
-      document.documentElement.dataset.lang = lang;
+      document.documentElement.dataset.siteLang = lang;
       document.documentElement.classList.add("is-lang-loading");
       if (!window.__LOADER_SHOWN_AT__) {
         window.__LOADER_SHOWN_AT__ = Date.now();
