@@ -25,6 +25,15 @@
       document.open();
       document.write(html);
       document.close();
+      try {
+        var pending = sessionStorage.getItem("site:pendingSection");
+        if (pending && (!location.hash || location.hash === "#header")) {
+          var data = JSON.parse(pending);
+          if (data && data.hash && data.hash !== "#header" && Date.now() - data.at < 15000) {
+            history.replaceState(null, "", location.pathname + data.hash);
+          }
+        }
+      } catch (e) {}
     })
     .catch(function () {
       location.replace("../");

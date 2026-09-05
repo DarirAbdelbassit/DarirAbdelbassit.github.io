@@ -135,8 +135,31 @@
     }, wait);
   }
 
+  function currentSectionHash() {
+    var hash = location.hash;
+    if (hash && hash !== "#" && hash !== "#header") {
+      return hash;
+    }
+    var shown = document.querySelector("section.section-show");
+    if (shown && shown.id) {
+      return "#" + shown.id;
+    }
+    return "";
+  }
+
+  function rememberSection(hash) {
+    try {
+      sessionStorage.setItem(
+        "site:pendingSection",
+        JSON.stringify({ hash: hash || "", at: Date.now() })
+      );
+    } catch (e) {}
+  }
+
   function goToLang(lang) {
-    var target = langPath(lang) + location.hash;
+    var hash = currentSectionHash();
+    rememberSection(hash);
+    var target = langPath(lang) + hash;
     var current = location.pathname.replace(/\/index\.html$/i, "/");
     if (!current.endsWith("/")) {
       current += "/";
@@ -146,8 +169,8 @@
       location.assign(target);
       return true;
     }
-    if (location.search) {
-      history.replaceState({}, "", langPath(lang) + location.hash);
+    if (location.search || location.hash !== hash) {
+      history.replaceState({}, "", langPath(lang) + hash);
     }
     return false;
   }

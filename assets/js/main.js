@@ -45,6 +45,100 @@
     })
   }
 
+  const PENDING_SECTION_KEY = 'site:pendingSection';
+
+  const sectionUrl = (hash) => {
+    const path = location.pathname + location.search;
+    return (!hash || hash === '#header') ? path : path + hash;
+  }
+
+  const setSectionUrl = (hash, replace) => {
+    const next = sectionUrl(hash);
+    const current = location.pathname + location.search + location.hash;
+    if (next === current) {
+      return;
+    }
+    if (replace) {
+      history.replaceState(null, '', next);
+    } else {
+      history.pushState(null, '', next);
+    }
+  }
+
+  const consumePendingSection = () => {
+    try {
+      const raw = sessionStorage.getItem(PENDING_SECTION_KEY);
+      sessionStorage.removeItem(PENDING_SECTION_KEY);
+      if (!raw) {
+        return '';
+      }
+      const data = JSON.parse(raw);
+      if (!data || !data.hash || data.hash === '#header') {
+        return '';
+      }
+      if (Date.now() - data.at > 15000) {
+        return '';
+      }
+      return data.hash;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  const closeMobileNav = () => {
+    let navbar = select('#navbar');
+    if (navbar && navbar.classList.contains('navbar-mobile')) {
+      navbar.classList.remove('navbar-mobile');
+      let navbarToggle = select('.mobile-nav-toggle');
+      if (navbarToggle) {
+        navbarToggle.classList.toggle('bi-list');
+        navbarToggle.classList.toggle('bi-x');
+      }
+    }
+  }
+
+  const showSection = (hash, options = {}) => {
+    const updateHistory = options.updateHistory !== false;
+    const replaceHistory = !!options.replaceHistory;
+    const section = hash && hash !== '#header' ? select(hash) : null;
+    const targetHash = section ? hash : '#header';
+    let header = select('#header');
+    let sections = select('section', true);
+    let navlinks = select('#navbar .nav-link', true);
+
+    closeMobileNav();
+
+    navlinks.forEach((item) => {
+      item.classList.toggle('active', item.getAttribute('href') === targetHash);
+    });
+
+    if (targetHash === '#header') {
+      header.classList.remove('header-top');
+      sections.forEach((item) => {
+        item.classList.remove('section-show');
+      });
+    } else if (!header.classList.contains('header-top')) {
+      header.classList.add('header-top');
+      setTimeout(function() {
+        sections.forEach((item) => {
+          item.classList.remove('section-show');
+        });
+        section.classList.add('section-show');
+      }, 350);
+    } else {
+      sections.forEach((item) => {
+        item.classList.remove('section-show');
+      });
+      section.classList.add('section-show');
+    }
+
+    if (updateHistory) {
+      setSectionUrl(targetHash, replaceHistory);
+    }
+
+    scrollto(targetHash);
+  }
+
   /**
    * Mobile nav toggle
    */
@@ -58,90 +152,44 @@
    * Scrool with ofset on links with a class name .scrollto
    */
   on('click', '.nav-link', function(e) {
-    let section = select(this.hash)
+    if (!this.hash) {
+      return;
+    }
+    let section = this.hash === '#header' ? select('#header') : select(this.hash);
     if (section) {
-      e.preventDefault()
-
-      let navbar = select('#navbar')
-      let header = select('#header')
-      let sections = select('section', true)
-      let navlinks = select('#navbar .nav-link', true)
-
-      navlinks.forEach((item) => {
-        item.classList.remove('active')
-      })
-
-      const matchingNav = select('#navbar .nav-link[href="' + this.hash + '"]')
-      if (matchingNav) {
-        matchingNav.classList.add('active')
-      } else {
-        this.classList.add('active')
-      }
-
-      if (navbar.classList.contains('navbar-mobile')) {
-        navbar.classList.remove('navbar-mobile')
-        let navbarToggle = select('.mobile-nav-toggle')
-        navbarToggle.classList.toggle('bi-list')
-        navbarToggle.classList.toggle('bi-x')
-      }
-
-      if (this.hash == '#header') {
-        header.classList.remove('header-top')
-        sections.forEach((item) => {
-          item.classList.remove('section-show')
-        })
-        return;
-      }
-
-      if (!header.classList.contains('header-top')) {
-        header.classList.add('header-top')
-        setTimeout(function() {
-          sections.forEach((item) => {
-            item.classList.remove('section-show')
-          })
-          section.classList.add('section-show')
-
-        }, 350);
-      } else {
-        sections.forEach((item) => {
-          item.classList.remove('section-show')
-        })
-        section.classList.add('section-show')
-      }
-
-      scrollto(this.hash)
+      e.preventDefault();
+      showSection(this.hash, { updateHistory: true });
     }
   }, true)
 
   /**
    * Activate/show sections on load with hash links
    */
-  window.addEventListener('load', () => {
-    if (window.location.hash) {
-      let initial_nav = select(window.location.hash)
-
-      if (initial_nav) {
-        let header = select('#header')
-        let navlinks = select('#navbar .nav-link', true)
-
-        header.classList.add('header-top')
-
-        navlinks.forEach((item) => {
-          if (item.getAttribute('href') == window.location.hash) {
-            item.classList.add('active')
-          } else {
-            item.classList.remove('active')
-          }
-        })
-
-        setTimeout(function() {
-          initial_nav.classList.add('section-show')
-        }, 350);
-
-        scrollto(window.location.hash)
-      }
+  const restoreSection = () => {
+    if (restoreSection.done) {
+      return;
     }
+    let hash = window.location.hash;
+    if (!hash || hash === '#header') {
+      hash = consumePendingSection();
+    } else {
+      try {
+        sessionStorage.removeItem(PENDING_SECTION_KEY);
+      } catch (e) {}
+    }
+    if (hash && hash !== '#header' && select(hash)) {
+      restoreSection.done = true;
+      showSection(hash, { updateHistory: true, replaceHistory: true });
+    }
+  };
+
+  window.addEventListener('popstate', () => {
+    showSection(window.location.hash || '#header', { updateHistory: false });
   });
+
+  window.addEventListener('load', restoreSection);
+  document.addEventListener('DOMContentLoaded', restoreSection);
+  restoreSection();
 
   /**
    * Porfolio isotope and filter

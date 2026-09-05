@@ -961,6 +961,55 @@ section .container {
   margin: 0 0 4px;
 }
 
+.resume .resume-org {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.resume .resume-org-name {
+  margin: 0;
+}
+
+.resume .resume-roles {
+  position: relative;
+  margin: 0 0 12px 2px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(255, 255, 255, 0.14);
+}
+
+.resume .resume-role {
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.resume .resume-role:last-child {
+  padding-bottom: 2px;
+}
+
+.resume .resume-role::before {
+  content: "";
+  position: absolute;
+  left: -21px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #09203a;
+  border: 2px solid #18d26e;
+}
+
+.resume .resume-role h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+}
+
 .resume .resume-company {
   margin: 0;
   font-size: 13px;
@@ -1053,7 +1102,8 @@ section .container {
 }
 
 @media (max-width: 575px) {
-  .resume .resume-top {
+  .resume .resume-top,
+  .resume .resume-org {
     flex-direction: column;
     align-items: flex-start;
   }
